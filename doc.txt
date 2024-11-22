@@ -1,0 +1,30 @@
+### Endpoint API untuk BackendIkanku
+
+#### Mendapatkan Data Pesanan Berdasarkan Status
+- **URL**: `/api/pesanan`
+- **Method**: `GET`
+- **Query Parameters**:
+  - `status`: Salah satu dari nilai berikut:
+    - `PesananBaru`
+    - `Dikemas`
+    - `Dikirim`
+    - `Selesai`
+    - `Ditolak`
+    - `Dibatalkan`
+
+- **Contoh URL**:
+  - `http://localhost:5000/api/pesanan?status=PesananBaru`
+  - `http://localhost:5000/api/pesanan?status=Dikirim`
+
+- **Response Contoh**:
+```json
+[
+  {
+    "id_pesanan": 1,
+    "nama_produk": "Ikan Nila",
+    "harga_produk": 45000,
+    "deskripsi_produk": "Ikan segar 1kg",
+    "foto_produk": "ikan_nila.jpg",
+    "kuantitas_pembelian": 2
+  }
+]
