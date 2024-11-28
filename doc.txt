@@ -28,3 +28,160 @@
     "kuantitas_pembelian": 2
   }
 ]
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+
+#### Mendapatkan Semua Produk
+- **URL**: `/api/produk`
+- **Method**: `GET`
+
+- **Deskripsi**: Endpoint ini digunakan untuk mendapatkan semua data produk yang tersedia di database.
+
+- **Contoh URL**:
+  - `http://localhost:5000/api/produk`
+  - `http://localhost:5000/api/produk/1`
+
+- **Response Contoh**:
+```json
+[
+  {
+    "id_produk": 1,
+    "nama_produk": "Ikan Nila",
+    "stok_produk": 50,
+    "foto_produk": "ikan_nila.jpg",
+    "deskripsi_produk": "Ikan nila segar",
+    "harga_produk": 45000,
+    "id_kategori": 2
+  },
+  {
+    "id_produk": 2,
+    "nama_produk": "Ikan Gurame",
+    "stok_produk": 20,
+    "foto_produk": "ikan_gurame.jpg",
+    "deskripsi_produk": "Ikan gurame segar",
+    "harga_produk": 70000,
+    "id_kategori": 2
+  }
+]
+
+
+~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+
+#### Menambahkan Item ke Keranjang
+- **URL**: `/api/keranjang`
+- **Method**: `POST`
+- **Deskripsi**: Endpoint ini digunakan untuk menambahkan produk ke keranjang, termasuk dengan variasi yang dipilih dan kuantitas produk.
+
+- **Body JSON**:
+  
+  {
+      "id_produk": 1,
+      "id_pilihan_variasi_satu": 2,
+      "id_pilihan_variasi_dua": 3,
+      "kuantitas": 2
+  }
+  `
+
+- **Contoh URL**:
+  - `http://localhost:5000/api/keranjang`
+
+- **Response Contoh**:
+  ```json
+  {
+      "success": true,
+      "message": "Item berhasil ditambahkan ke keranjang",
+      "data": {
+          "insertId": 1,
+          "affectedRows": 1
+      }
+  }
+  ```
+
+#### Mendapatkan Semua Item dari Keranjang
+- **URL**: `/api/keranjang`
+- **Method**: `GET`
+- **Deskripsi**: Endpoint ini digunakan untuk mendapatkan semua item yang ada di keranjang, termasuk detail produk, variasi, kuantitas, dan subtotal harga.
+
+- **Contoh URL**:
+  - `http://localhost:5000/api/keranjang`
+
+- **Response Contoh**:
+  ```json
+  [
+      {
+          "id_keranjang": 1,
+          "nama_produk": "Ikan Nila",
+          "harga_produk": 45000,
+          "kuantitas": 2,
+          "variasi": "1 kg, 2 ekor",
+          "subtotal": 90000
+      },
+      {
+          "id_keranjang": 2,
+          "nama_produk": "Ikan Lele",
+          "harga_produk": 30000,
+          "kuantitas": 1,
+          "variasi": "500 gram, 3 ekor",
+          "subtotal": 30000
+      }
+  ]
+  ```
+
+#### Menghapus Item dari Keranjang
+- **URL**: `/api/keranjang/:id`
+- **Method**: `DELETE`
+- **Deskripsi**: Endpoint ini digunakan untuk menghapus item dari keranjang berdasarkan `id_keranjang`.
+
+- **Contoh URL**:
+  - `http://localhost:5000/api/keranjang/1`
+
+- **Response Contoh**:
+  ```json
+  {
+      "success": true,
+      "message": "Item berhasil dihapus dari keranjang",
+      "data": {
+          "affectedRows": 1
+      }
+  }
+  ```
+
+#### Mengupdate Kuantitas Item di Keranjang
+- **URL**: `/api/keranjang/:id`
+- **Method**: `PUT`
+- **Deskripsi**: Endpoint ini digunakan untuk mengupdate kuantitas item di keranjang berdasarkan `id_keranjang`.
+
+- **Body JSON**:
+  ```json
+  {
+      "kuantitas": 5
+  }
+  ```
+
+- **Contoh URL**:
+  - `http://localhost:5000/api/keranjang/1`
+
+- **Response Contoh**:
+  ```json
+  {
+      "success": true,
+      "message": "Item berhasil diupdate di keranjang",
+      "data": {
+          "changedRows": 1
+      }
+  }
+  ```
+
+### Informasi Tambahan
+- **Status Response**:
+  - `200 OK`: Operasi berhasil.
+  - `201 Created`: Data berhasil ditambahkan (khusus untuk `POST`).
+  - `400 Bad Request`: Data tidak valid atau request salah.
+  - `404 Not Found`: Data tidak ditemukan (misalnya, `id_keranjang` tidak valid).
+  - `500 Internal Server Error`: Terjadi kesalahan di server.
+
+- **Header yang Direkomendasikan**:
+  - `Content-Type: application/json`
+```
+
+Dokumentasi di atas sudah mencakup semua endpoint yang berhubungan dengan **keranjang**. Kamu bisa langsung copy-paste dan sesuaikan kalau ada tambahan! 🚀

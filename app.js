@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
 const pesananRoutes = require('./routes/pesananRoutes');
+const produkRoutes = require('./routes/produkRoutes');
+const keranjangRoutes = require('./routes/keranjangRoutes');
 
+    
 // Middleware
 app.use(express.json());
 app.use((err, req, res, next) => {
@@ -12,6 +15,9 @@ app.use((err, req, res, next) => {
 
 // Routes
 app.use('/api', pesananRoutes);
+app.use('/api', produkRoutes);
+app.use('/api', keranjangRoutes);
+
 
 // Server
 const PORT = process.env.PORT || 5000;
