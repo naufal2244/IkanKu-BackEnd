@@ -1,0 +1,8 @@
+# Terapkan LF untuk semua file teks
+* text=auto
+
+# Khusus file tertentu tetap menggunakan binary mode
+*.bat binary
+*.exe binary
+*.png binary
+*.jpg binary
