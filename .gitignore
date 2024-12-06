@@ -1,0 +1,10 @@
+node_modules/
+.env
+logs/
+*.log
+.DS_Store
+Thumbs.db
+
+# Firebase Credentials
+ikankuauth-firebase-adminsdk-ftja5-23a075a258.json
+
