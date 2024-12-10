@@ -1,28 +1,24 @@
 const admin = require('firebase-admin');
 const fs = require('fs');
+const path = require('path');
 
+// Path relatif ke file kredensial dari file ini
+const credentialsPath = path.join(__dirname, '', 'ikankuauth-firebase-adminsdk-ftja5-23a075a258.json');
 
-// Ambil path file kredensial dari environment variable
-const path = process.env.FIREBASE_CREDENTIALS_PATH;
-
-// Periksa apakah path valid
-if (!path || !fs.existsSync(path)) {
-    throw new Error(`File kredensial Firebase tidak ditemukan atau path tidak valid: ${path}`);
+// Periksa apakah file kredensial ada
+if (!fs.existsSync(credentialsPath)) {
+    throw new Error(`File kredensial Firebase tidak ditemukan: ${credentialsPath}`);
 } else {
-    console.log(`File kredensial ditemukan di: ${path}`);
+    console.log(`File kredensial ditemukan di: ${credentialsPath}`);
 }
 
-// Inisialisasi Firebase Admin SDK jika belum diinisialisasi
-if (!admin.apps.length) {
-    const serviceAccount = require(path); // Muat kredensial dari file JSON
+// Muat file kredensial dan inisialisasi Firebase Admin SDK
+const serviceAccount = require(credentialsPath);
 
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-    });
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+});
 
-    console.log('Firebase Admin SDK berhasil diinisialisasi.');
-} else {
-    console.log('Firebase Admin SDK sudah diinisialisasi sebelumnya.');
-}
+console.log('Firebase Admin SDK berhasil diinisialisasi.');
 
 module.exports = admin;

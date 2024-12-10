@@ -11,9 +11,14 @@ const Pembeli = {
 
     // Fungsi untuk mencari pembeli berdasarkan nomor telepon
     findByNoPonsel: async (no_ponsel) => {
-        const query = 'SELECT * FROM pembeli WHERE no_ponsel = ?';
+        try{const query = 'SELECT * FROM pembeli WHERE no_ponsel = ?';
+        console.log('Executing query:', query); // Tambahkan log untuk debug
         const [rows] = await db.execute(query, [no_ponsel]);
         return rows[0];
+        } catch(error){
+            console.error('Error in findByNoPonsel:', error.message);
+            throw error; // Lempar error ke controller
+        }
     },
 
     // Fungsi untuk mencari pembeli berdasarkan ID Firebase

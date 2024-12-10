@@ -9,4 +9,8 @@ const Toko = {
     }
 };
 
+<<<<<<< HEAD
 module.exports = Toko;
+=======
+module.exports = Toko;
+>>>>>>> c16f88f (I love backend)

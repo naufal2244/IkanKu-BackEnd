@@ -17,6 +17,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "firebase-admin": "^13.0.1",
+    "gopd": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.4"
   }

@@ -1,6 +1,8 @@
 const Pembeli = require('../models/pembeli');
-const Toko = require('../models/toko');  // Tambahkan model Toko
-const bcrypt = require('bcryptjs');  // Untuk password hashing
+const Toko = require('../models/toko')
+const Alamat = require('../models/alamat');
+const bcrypt = require('bcryptjs'); // Untuk password hashing
+const admin = require('../config/firebase');
 
 // Fungsi untuk registrasi
 const register = async (req, res) => {
@@ -52,7 +54,6 @@ const register = async (req, res) => {
 };
 
 // Fungsi untuk login
-// Fungsi untuk login
 const login = async (req, res) => {
     const { no_ponsel, kata_sandi } = req.body;
 
@@ -62,40 +63,46 @@ const login = async (req, res) => {
     }
 
     try {
-        // Cek apakah nomor ponsel milik toko
+       
+
+        // Jika bukan toko, cek apakah nomor ponsel milik pembeli
+        const pembeli = await Pembeli.findByNoPonsel(no_ponsel);
+        if (pembeli) {
+            // Verifikasi kata sandi
+            const isMatch = await bcrypt.compare(kata_sandi, pembeli.kata_sandi);
+            if (!isMatch) {
+                return res.status(400).json({ message: 'Kata sandi salah' });
+            }
+
+            // Jika login berhasil sebagai pembeli
+            return res.status(200).json({
+                message: 'Login berhasil',
+                userType: 'pembeli', // Tambahkan userType
+                pembeli: pembeli,
+                toko: null // Kosongkan data toko
+            });
+        }
+
+        // Cari toko berdasarkan nomor telepon
         const toko = await Toko.findByNoPonsel(no_ponsel);
         if (toko) {
-            // Verifikasi kata sandi untuk toko
+            // Verifikasi kata sandi
             const isMatch = await bcrypt.compare(kata_sandi, toko.kata_sandi);
             if (!isMatch) {
                 return res.status(400).json({ message: 'Kata sandi salah' });
             }
+
             // Jika login berhasil sebagai toko
             return res.status(200).json({
                 message: 'Login berhasil',
-                userType: 'toko',
+                userType: 'toko', // Tambahkan userType
+                pembeli: null, // Kosongkan data pembeli
                 toko: toko
             });
         }
 
-        // Jika bukan toko, cek apakah nomor ponsel milik pembeli
-        const pembeli = await Pembeli.findByNoPonsel(no_ponsel);
-        if (!pembeli) {
-            return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
-        }
-
-        // Verifikasi kata sandi untuk pembeli
-        const isMatch = await bcrypt.compare(kata_sandi, pembeli.kata_sandi);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Kata sandi salah' });
-        }
-
-        // Jika login berhasil sebagai pembeli
-        res.status(200).json({
-            message: 'Login berhasil',
-            userType: 'user',
-            pembeli: pembeli
-        });
+        // Jika pengguna tidak ditemukan di kedua tabel
+        return res.status(404).json({ message: 'Pengguna tidak ditemukan' });
     } catch (error) {
         console.error('Error selama login:', error);
         res.status(500).json({ message: 'Terjadi kesalahan pada server' });
