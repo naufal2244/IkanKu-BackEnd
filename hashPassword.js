@@ -9,4 +9,6 @@ bcrypt.hash(plainPassword, 10, (err, hashedPassword) => {
         return;
     }
     console.log('Hashed password:', hashedPassword); // Ini adalah hasil hashed password
+
 });
+
